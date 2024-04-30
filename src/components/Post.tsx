@@ -2,7 +2,7 @@ import { Box, Container, Typography } from "@mui/material";
 
 function Post() {
   return (
-    <Container sx={{ my: 3 }} maxWidth="md">
+    <Container sx={{ my: 3 }}>
       <img
         src="https://source.unsplash.com/random"
         width="360px"

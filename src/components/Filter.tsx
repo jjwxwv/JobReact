@@ -5,7 +5,7 @@ import { Box, FormControl, FormLabel, Paper } from "@mui/material";
 
 export default function Filter() {
   return (
-    <FormControl>
+    <FormControl fullWidth>
       <Paper sx={{ p: 3 }}>
         <FormLabel>ตัวกรอง</FormLabel>
         <Box>

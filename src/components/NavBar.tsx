@@ -7,7 +7,7 @@ import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import React from "react";
-import { Button } from "@mui/material";
+import { AppBar, Button, Container } from "@mui/material";
 
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 function NavBar() {
@@ -24,35 +24,30 @@ function NavBar() {
   };
 
   return (
-    <Toolbar
-      disableGutters
-      sx={{
-        justifyContent: {
-          xs: "space-between",
-          md: "space-around",
-        },
-      }}
-    >
-      <Typography
-        variant="h5"
-        noWrap
-        component="a"
-        href="/post"
-        sx={{
-          mr: 2,
-          display: { md: "flex" },
-          fontFamily: "monospace",
-          fontWeight: 700,
-          color: "inherit",
-          textDecoration: "none",
-        }}
+    <Toolbar disableGutters>
+      <Container
+        sx={{ display: "flex", justifyContent: "space-between", p: 0 }}
       >
-        jobsgg
-      </Typography>
-      <Button variant="text" size="large" disableRipple={true}>
-        ผู้ประกอบการเข้าสู่ระบบ
-      </Button>
-      {/* <Box sx={{ flexGrow: 0 }}>
+        <Typography
+          variant="h5"
+          noWrap
+          component="a"
+          href="/post"
+          sx={{
+            mr: 2,
+            display: { md: "flex" },
+            fontFamily: "monospace",
+            fontWeight: 700,
+            color: "inherit",
+            textDecoration: "none",
+          }}
+        >
+          jobsgg
+        </Typography>
+        <Button variant="text" size="large" disableRipple={true}>
+          ผู้ประกอบการเข้าสู่ระบบ
+        </Button>
+        {/* <Box sx={{ flexGrow: 0 }}>
         <Tooltip title="Open settings">
           <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
             <Avatar alt="JJ" src="/static/images/avatar/2.jpg" />
@@ -81,6 +76,7 @@ function NavBar() {
           ))}
         </Menu>
       </Box> */}
+      </Container>
     </Toolbar>
   );
 }
