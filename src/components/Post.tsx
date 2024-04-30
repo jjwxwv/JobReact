@@ -2,8 +2,12 @@ import { Box, Container, Typography } from "@mui/material";
 
 function Post() {
   return (
-    <Container sx={{ my: 1 }}>
-      <img src="https://source.unsplash.com/random" height="350px" />
+    <Container sx={{ my: 3 }} maxWidth="md">
+      <img
+        src="https://source.unsplash.com/random"
+        width="360px"
+        height="270px"
+      />
       <Typography gutterBottom variant="h5" component="div">
         Full Stack Developer
       </Typography>

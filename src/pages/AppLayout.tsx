@@ -1,27 +1,27 @@
-import { Box, Stack } from "@mui/material";
+import { Box, Divider, Link, Stack } from "@mui/material";
 import NavBar from "../components/NavBar";
 import SearchBar from "../components/SearchBar";
 import Filter from "../components/Filter";
 import PostCard from "../components/PostCard";
-import Post from "../components/Post";
 
 function AppLayout() {
   return (
-    <Box>
+    <Stack divider={<Divider orientation="horizontal" flexItem />}>
       <NavBar />
-      {/* <Stack
-        sx={{ m: 1 }}
+      <Stack
+        sx={{ m: 2 }}
         direction={{ xs: "column", sm: "row" }}
         justifyContent="center"
       >
         <Filter />
         <Box>
           <SearchBar />
-          <PostCard />
+          <Link underline="none" sx={{ cursor: "pointer" }}>
+            <PostCard />
+          </Link>
         </Box>
-      </Stack> */}
-      <Post />
-    </Box>
+      </Stack>
+    </Stack>
   );
 }
 

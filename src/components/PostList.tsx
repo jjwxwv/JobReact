@@ -1,5 +1,13 @@
+import PostCard from "./PostCard";
+
 function PostList() {
-  return <div></div>;
+  return (
+    <>
+      {postList.map((post) => (
+        <PostCard />
+      ))}
+    </>
+  );
 }
 
 export default PostList;

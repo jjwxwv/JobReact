@@ -10,7 +10,7 @@ function PostCard() {
         <CardMedia
           component="img"
           image="https://source.unsplash.com/random"
-          sx={{ width: "150px", height: "100px" }}
+          sx={{ width: "120px", height: "90px" }}
           title="img"
         />
         <Typography gutterBottom variant="h6" component="div">
