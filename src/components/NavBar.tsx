@@ -8,6 +8,7 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import React from "react";
 import { AppBar, Button, Container } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 function NavBar() {
@@ -31,13 +32,11 @@ function NavBar() {
         <Typography
           variant="h5"
           noWrap
-          component="a"
-          href="/post"
+          component={Link}
+          to="/post"
           sx={{
-            mr: 2,
-            display: { md: "flex" },
             fontFamily: "monospace",
-            fontWeight: 700,
+            fontWeight: 600,
             color: "inherit",
             textDecoration: "none",
           }}
