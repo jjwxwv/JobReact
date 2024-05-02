@@ -10,15 +10,13 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import axios from "axios";
-type filterType = {
-  id: number;
-  title: string;
-};
+import { commonType } from "../types/type";
+
 export default function Filter() {
   const url1 = "http://localhost:8080/hiring";
   const url2 = "http://localhost:8080/salary";
-  const [category, setCategory] = useState<filterType[]>([]);
-  const [salary, setSalary] = useState<filterType[]>([]);
+  const [category, setCategory] = useState<commonType[]>([]);
+  const [salary, setSalary] = useState<commonType[]>([]);
   useEffect(function () {
     async function fetchData() {
       try {
@@ -54,6 +52,7 @@ export default function Filter() {
                 value={value.id}
                 control={<Radio size="small" />}
                 label={value.title}
+                key={value.id}
               />
             ))}
             {/* <FormControlLabel
@@ -91,6 +90,7 @@ export default function Filter() {
                 value={value.id}
                 control={<Radio size="small" />}
                 label={value.title}
+                key={value.id}
               />
             ))}
             {/* <FormControlLabel

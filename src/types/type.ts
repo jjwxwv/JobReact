@@ -1,4 +1,9 @@
+export type commonType = {
+  id: number;
+  title: string;
+};
 export type PostType = {
+  id: number;
   title: string;
   companyName: string;
   salary: string;
@@ -9,8 +14,8 @@ export type PostType = {
   category: string;
   hiringTypeId: string;
   exp: string;
-  jobDescription: string[];
-  responsibility: string[];
-  qualification: string[];
-  benefit: string[];
+  jobDescription: commonType[];
+  responsibility: commonType[];
+  qualification: commonType[];
+  benefit: commonType[];
 };

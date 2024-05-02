@@ -7,7 +7,7 @@ function PostList({ post }: PostListType) {
   return (
     <>
       {post.map((value: PostType) => (
-        <PostCard value={value} />
+        <PostCard value={value} key={value.id} />
       ))}
     </>
   );
