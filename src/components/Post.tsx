@@ -1,8 +1,8 @@
-import { Box, Container, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 function Post() {
   return (
-    <Container sx={{ my: 3 }}>
+    <>
       <img
         src="https://source.unsplash.com/random"
         width="360px"
@@ -58,7 +58,7 @@ function Post() {
           Free text
         </Typography>
       </Box>
-    </Container>
+    </>
   );
 }
 

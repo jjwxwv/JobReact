@@ -4,8 +4,10 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
+import { PostType } from "./HomePage";
 
-function PostCard() {
+function PostCard({ value }: { value: PostType }) {
+  const jobDescription = value.jobDescription.slice(0, 3);
   return (
     <Card elevation={2}>
       <CardActionArea component={Link} to="/post/id" sx={{ px: 2, py: 1 }}>
@@ -17,26 +19,28 @@ function PostCard() {
             title="img"
           />
           <Typography gutterBottom variant="h6" component="div">
-            Full Stack Developer
+            {value.title}
           </Typography>
           <Typography variant="body1" color="text.secondary">
-            Address
+            {value.address}
           </Typography>
           <Typography variant="body1" color="text.secondary">
-            category
+            {value.category}
           </Typography>
           <Typography variant="body1" color="text.secondary">
-            salary
+            {value.salary}
           </Typography>
-          <Typography variant="subtitle2" color="text.secondary" component="li">
-            Free text
-          </Typography>
-          <Typography variant="subtitle2" color="text.secondary" component="li">
-            Free text
-          </Typography>
-          <Typography variant="subtitle2" color="text.secondary" component="li">
-            Free text
-          </Typography>
+          {jobDescription.map((des) => {
+            return (
+              <Typography
+                variant="subtitle2"
+                color="text.secondary"
+                component="li"
+              >
+                {des}
+              </Typography>
+            );
+          })}
         </CardContent>
       </CardActionArea>
     </Card>

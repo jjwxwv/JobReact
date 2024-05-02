@@ -37,7 +37,6 @@ function NavBar() {
           sx={{
             fontFamily: "monospace",
             fontWeight: 600,
-            color: "inherit",
             textDecoration: "none",
           }}
         >

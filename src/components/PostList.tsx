@@ -1,10 +1,13 @@
+import { PostType } from "../types/type";
 import PostCard from "./PostCard";
-
-function PostList() {
+type PostListType = {
+  post: PostType[];
+};
+function PostList({ post }: PostListType) {
   return (
     <>
-      {postList.map((post) => (
-        <PostCard />
+      {post.map((value: PostType) => (
+        <PostCard value={value} />
       ))}
     </>
   );
