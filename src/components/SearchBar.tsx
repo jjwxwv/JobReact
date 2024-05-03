@@ -1,15 +1,43 @@
 import { Autocomplete, Button, Grid, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-type categoryType = { label: string; id: number };
-const category: categoryType[] = [
-  { label: "IT", id: 1 },
-  { label: "Law", id: 2 },
-  { label: "Engineer", id: 3 },
-  { label: "Accountant", id: 4 },
-  { label: "Business", id: 5 },
-];
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { commonType } from "../types/type";
 
-function SearchBar() {
+type ComponentType = {
+  keyword: string;
+  selectedCategory: commonType | null;
+  setKeyword: React.Dispatch<React.SetStateAction<string>>;
+  setSelectedCategory: React.Dispatch<React.SetStateAction<commonType | null>>;
+};
+function SearchBar({
+  keyword,
+  selectedCategory,
+  setKeyword,
+  setSelectedCategory,
+}: ComponentType) {
+  const url = "http://localhost:8080/category";
+  const [category, setCategory] = useState<commonType[]>([]);
+
+  useEffect(function () {
+    async function fetchData() {
+      try {
+        const res = await axios.get(url);
+        const data = res.data;
+        console.log(data);
+        if (res.statusText !== "OK") {
+          throw new Error("fetch error");
+        }
+        setCategory(data);
+      } catch (err) {
+        if (err instanceof Error) {
+          reportError({ message: err.message });
+        }
+      }
+    }
+    fetchData();
+  }, []);
+
   return (
     <form
     // onSubmit={}
@@ -22,18 +50,23 @@ function SearchBar() {
             variant="outlined"
             size="small"
             fullWidth
-            //   onChange={}
+            value={keyword}
+            onChange={(e) => setKeyword(e.target.value)}
           />
         </Grid>
         <Grid item xs={12} sm={12} md={5}>
           <Autocomplete
+            value={selectedCategory}
             fullWidth
             disablePortal
             id="category-select"
             options={category}
             size="small"
-            //   onChange={}
-            //   onClose={}
+            getOptionLabel={(option) => option.title}
+            onChange={(_, newValue) => {
+              setSelectedCategory(newValue);
+            }}
+            // onClose={}
             renderInput={(params) => (
               <TextField {...params} label="ระบุหมวดหมู่งาน" />
             )}

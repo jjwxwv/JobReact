@@ -12,31 +12,45 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { commonType } from "../types/type";
 
-export default function Filter() {
+type ComponentType = {
+  selectedHiring: number | null;
+  selectedSalary: number | null;
+  setSelectedHiring: React.Dispatch<React.SetStateAction<number | null>>;
+  setSelectedSalary: React.Dispatch<React.SetStateAction<number | null>>;
+};
+export default function Filter({
+  selectedHiring,
+  selectedSalary,
+  setSelectedHiring,
+  setSelectedSalary,
+}: ComponentType) {
   const url1 = "http://localhost:8080/hiring";
   const url2 = "http://localhost:8080/salary";
-  const [category, setCategory] = useState<commonType[]>([]);
+  const [hiring, setHiring] = useState<commonType[]>([]);
   const [salary, setSalary] = useState<commonType[]>([]);
-  useEffect(function () {
-    async function fetchData() {
-      try {
-        const res1 = await axios.get(url1);
-        const res2 = await axios.get(url2);
-        const data1 = res1.data;
-        const data2 = res2.data;
-        if (res1.statusText !== "OK") {
-          throw new Error("fetch error");
-        }
-        setCategory(data1);
-        setSalary(data2);
-      } catch (err) {
-        if (err instanceof Error) {
-          reportError({ message: err.message });
+  useEffect(
+    function () {
+      async function fetchData() {
+        try {
+          const res1 = await axios.get(url1);
+          const res2 = await axios.get(url2);
+          const data1 = res1.data;
+          const data2 = res2.data;
+          if (res1.statusText !== "OK") {
+            throw new Error("fetch error");
+          }
+          setHiring(data1);
+          setSalary(data2);
+        } catch (err) {
+          if (err instanceof Error) {
+            reportError({ message: err.message });
+          }
         }
       }
-    }
-    fetchData();
-  }, []);
+      fetchData();
+    },
+    [hiring, salary]
+  );
 
   return (
     <Paper sx={{ p: 3 }}>
@@ -46,8 +60,14 @@ export default function Filter() {
       <FormControl fullWidth focused={false} sx={{ gap: 1 }}>
         <Box>
           <FormLabel>ลักษณะงาน</FormLabel>
-          <RadioGroup>
-            {category.map((value) => (
+          <RadioGroup
+            value={selectedHiring}
+            onChange={(_, value) => {
+              console.log(value);
+              setSelectedHiring(Number(value));
+            }}
+          >
+            {hiring.map((value) => (
               <FormControlLabel
                 value={value.id}
                 control={<Radio size="small" />}
@@ -84,7 +104,13 @@ export default function Filter() {
         </Box>
         <Box>
           <FormLabel>ช่วงระหว่างเงินเดือนที่ต้องการ</FormLabel>
-          <RadioGroup>
+          <RadioGroup
+            value={selectedSalary}
+            onChange={(_, value) => {
+              console.log(value);
+              setSelectedSalary(Number(value));
+            }}
+          >
             {salary.map((value) => (
               <FormControlLabel
                 value={value.id}
