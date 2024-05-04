@@ -67,6 +67,11 @@ export default function Filter({
               setSelectedHiring(Number(value));
             }}
           >
+            <FormControlLabel
+              value={0}
+              control={<Radio size="small" />}
+              label={"เลือกทั้งหมด"}
+            />
             {hiring.map((value) => (
               <FormControlLabel
                 value={value.id}
@@ -111,6 +116,11 @@ export default function Filter({
               setSelectedSalary(Number(value));
             }}
           >
+            <FormControlLabel
+              value={0}
+              control={<Radio size="small" />}
+              label={"เลือกทั้งหมด"}
+            />
             {salary.map((value) => (
               <FormControlLabel
                 value={value.id}

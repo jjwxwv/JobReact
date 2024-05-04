@@ -3,18 +3,29 @@ import SearchIcon from "@mui/icons-material/Search";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { commonType } from "../types/type";
+import { Link } from "react-router-dom";
 
 type ComponentType = {
   keyword: string;
   selectedCategory: commonType | null;
   setKeyword: React.Dispatch<React.SetStateAction<string>>;
   setSelectedCategory: React.Dispatch<React.SetStateAction<commonType | null>>;
+  handleSubmit: (
+    e:
+      | React.FormEvent<HTMLFormElement>
+      | React.MouseEvent<HTMLAnchorElement, MouseEvent>
+  ) => void;
+  selectedHiring: number | null;
+  selectedSalary: number | null;
 };
 function SearchBar({
   keyword,
   selectedCategory,
   setKeyword,
   setSelectedCategory,
+  handleSubmit,
+  selectedHiring,
+  selectedSalary,
 }: ComponentType) {
   const url = "http://localhost:8080/category";
   const [category, setCategory] = useState<commonType[]>([]);
@@ -39,9 +50,7 @@ function SearchBar({
   }, []);
 
   return (
-    <form
-    // onSubmit={}
-    >
+    <form onSubmit={(e) => handleSubmit(e)}>
       <Grid container rowSpacing={1} columnSpacing={1}>
         <Grid item xs={12} sm={12} md={5}>
           <TextField
@@ -74,10 +83,16 @@ function SearchBar({
         </Grid>
         <Grid item xs={12} sm={12} md={2}>
           <Button
-            fullWidth
+            component={Link}
+            to={`?${keyword ? `title=${keyword}` : ""}${
+              selectedCategory ? `categoryId=${selectedCategory.id}` : ""
+            }${selectedHiring ? `hiringTypeId=${selectedHiring}` : ""}${
+              selectedSalary ? `salaryId=${selectedSalary}` : ""
+            }`}
             variant="contained"
             size="medium"
             endIcon={<SearchIcon />}
+            fullWidth
           >
             ค้นหา
           </Button>

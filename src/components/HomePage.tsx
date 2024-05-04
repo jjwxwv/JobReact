@@ -8,41 +8,49 @@ import { PostType, commonType } from "../types/type";
 import { useSearchParams } from "react-router-dom";
 
 function HomePage() {
-  const url = "http://localhost:8080/post";
+  const [url, setUrl] = useState<string>("http://localhost:8080/post");
   const [post, setPost] = useState<PostType[]>([]);
   const [keyword, setKeyword] = useState<string>("");
   const [selectedCategory, setSelectedCategory] = useState<commonType | null>(
     null
   );
-  const [selectedHiring, setSelectedHiring] = useState<number | null>(null);
-  const [selectedSalary, setSelectedSalary] = useState<number | null>(null);
+  const [selectedHiring, setSelectedHiring] = useState<number | null>(0);
+  const [selectedSalary, setSelectedSalary] = useState<number | null>(0);
   const [searchParams, setSearchParams] = useSearchParams();
+  // const currentKeyword = searchParams.get("title");
+  // const currentCategory = searchParams.get("categoryId");
+  // const currentHiring = searchParams.get("hiringTypeId");
+  // const currentSalary = searchParams.get("salaryId");
 
-  useEffect(function () {
-    async function fetchData() {
-      try {
-        const res = await axios.get(url);
-        const data = res.data;
-        console.log(data);
-        if (res.statusText !== "OK") {
-          throw new Error("fetch error");
-        }
-        setPost(data);
-      } catch (err) {
-        if (err instanceof Error) {
-          reportError({ message: err.message });
+  useEffect(
+    function () {
+      async function fetchData() {
+        try {
+          const res = await axios.get(url);
+          const data = res.data;
+          console.log(data);
+          if (res.statusText !== "OK") {
+            throw new Error("fetch error");
+          }
+          setPost(data);
+        } catch (err) {
+          if (err instanceof Error) {
+            reportError({ message: err.message });
+          }
         }
       }
-    }
-    fetchData();
-  }, []);
-  function handleSubmit() {
-    setSearchParams({
-      title: keyword || "",
-      // salaryId: selectedSalary?.toString() || "",
-      // categoryId: selectedCategory?.id?.toString() || "",
-      // hiringTypeId: selectedHiring?.toString() || "",
-    });
+      fetchData();
+    },
+    [url]
+  );
+  function handleSubmit(
+    e:
+      | React.FormEvent<HTMLFormElement>
+      | React.MouseEvent<HTMLAnchorElement, MouseEvent>
+  ) {
+    e.preventDefault();
+    console.log(e);
+    setUrl(window.location.pathname);
   }
   // function handleChange(
   //   e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -74,6 +82,9 @@ function HomePage() {
                 setKeyword={setKeyword}
                 selectedCategory={selectedCategory}
                 setSelectedCategory={setSelectedCategory}
+                handleSubmit={handleSubmit}
+                selectedHiring={selectedHiring}
+                selectedSalary={selectedSalary}
               />
             </Grid>
             <Grid item xs={12} sm={12} md={12}>
