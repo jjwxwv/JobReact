@@ -8,19 +8,40 @@ import { PostType, commonType } from "../types/type";
 import { useSearchParams } from "react-router-dom";
 
 function HomePage() {
-  const [url, setUrl] = useState<string>("http://localhost:8080/post");
-  const [post, setPost] = useState<PostType[]>([]);
-  const [keyword, setKeyword] = useState<string>("");
-  const [selectedCategory, setSelectedCategory] = useState<commonType | null>(
-    null
-  );
-  const [selectedHiring, setSelectedHiring] = useState<number | null>(0);
-  const [selectedSalary, setSelectedSalary] = useState<number | null>(0);
   const [searchParams, setSearchParams] = useSearchParams();
-  // const currentKeyword = searchParams.get("title");
-  // const currentCategory = searchParams.get("categoryId");
-  // const currentHiring = searchParams.get("hiringTypeId");
-  // const currentSalary = searchParams.get("salaryId");
+  const getHiring = Number(searchParams.get("hiringTypeId"));
+  // if (getHiring === 0) {
+  //   searchParams.delete("hiringTypeId");
+  //   setSearchParams(searchParams);
+  // }
+  const getSalary = Number(searchParams.get("salaryId"));
+  // if (getSalary === 0) {
+  //   searchParams.delete("salaryId");
+  //   setSearchParams(searchParams);
+  // }
+  const title = searchParams.get("title");
+  // if (title === "") {
+  //   searchParams.delete("title");
+  //   setSearchParams(searchParams);
+  // }
+  const [category, setCategory] = useState<commonType[]>([]);
+  const categoryId = searchParams.get("categoryId");
+  const [getCategory] = category.filter((cur) => cur.id === Number(categoryId));
+  const [url, setUrl] = useState<string>(
+    `${
+      window.location.search
+        ? `http://localhost:8080/post${window.location.search}`
+        : `http://localhost:8080/post`
+    }`
+  );
+  const categoryUrl = "http://localhost:8080/category";
+  const [post, setPost] = useState<PostType[]>([]);
+  const [keyword, setKeyword] = useState<string>(title || "");
+  const [selectedCategory, setSelectedCategory] = useState<commonType | null>(
+    getCategory || null
+  );
+  const [selectedHiring, setSelectedHiring] = useState<number>(getHiring || 0);
+  const [selectedSalary, setSelectedSalary] = useState<number>(getSalary || 0);
 
   useEffect(
     function () {
@@ -43,25 +64,40 @@ function HomePage() {
     },
     [url]
   );
-  function handleSubmit(
-    e:
-      | React.FormEvent<HTMLFormElement>
-      | React.MouseEvent<HTMLAnchorElement, MouseEvent>
-  ) {
+  useEffect(function () {
+    async function fetchData1() {
+      try {
+        const categoryRes = await axios.get(categoryUrl);
+        const categoryData = categoryRes.data;
+        if (categoryRes.statusText !== "OK") {
+          throw new Error("fetch error");
+        }
+        setCategory(categoryData);
+      } catch (err) {
+        if (err instanceof Error) {
+          reportError({ message: err.message });
+        }
+      }
+    }
+    fetchData1();
+  }, []);
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     console.log(e);
-    setUrl(window.location.pathname);
+    keyword ? searchParams.set("title", keyword) : searchParams.delete("title");
+    selectedCategory
+      ? searchParams.set("categoryId", selectedCategory.id.toString())
+      : searchParams.delete("categoryId");
+    selectedHiring
+      ? searchParams.set("hiringTypeId", selectedHiring.toString())
+      : searchParams.delete("hiringTypeId");
+    selectedSalary
+      ? searchParams.set("salaryId", selectedSalary.toString())
+      : searchParams.delete("salaryId");
+    setSearchParams(searchParams);
+    console.log(window.location);
+    setUrl(`http://localhost:8080/post${window.location.search}`);
   }
-  // function handleChange(
-  //   e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  // ) {
-  //   console.log(e.target.value);
-  //   setKeyword(e.target.value);
-  // }
-  // function handleSelectedCategory(value: commonType | null) {
-  //   console.log(value);
-  //   setSelectedCategory(value);
-  // }
 
   return (
     <>
@@ -83,8 +119,7 @@ function HomePage() {
                 selectedCategory={selectedCategory}
                 setSelectedCategory={setSelectedCategory}
                 handleSubmit={handleSubmit}
-                selectedHiring={selectedHiring}
-                selectedSalary={selectedSalary}
+                category={category}
               />
             </Grid>
             <Grid item xs={12} sm={12} md={12}>

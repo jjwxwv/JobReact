@@ -13,10 +13,10 @@ import axios from "axios";
 import { commonType } from "../types/type";
 
 type ComponentType = {
-  selectedHiring: number | null;
-  selectedSalary: number | null;
-  setSelectedHiring: React.Dispatch<React.SetStateAction<number | null>>;
-  setSelectedSalary: React.Dispatch<React.SetStateAction<number | null>>;
+  selectedHiring: number;
+  selectedSalary: number;
+  setSelectedHiring: React.Dispatch<React.SetStateAction<number>>;
+  setSelectedSalary: React.Dispatch<React.SetStateAction<number>>;
 };
 export default function Filter({
   selectedHiring,
