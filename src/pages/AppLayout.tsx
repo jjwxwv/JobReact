@@ -6,7 +6,7 @@ function AppLayout() {
   return (
     <Stack divider={<Divider orientation="horizontal" flexItem />}>
       <NavBar />
-      <Container sx={{ p: 0 }}>
+      <Container sx={{ my: 2 }}>
         <Outlet />
       </Container>
     </Stack>

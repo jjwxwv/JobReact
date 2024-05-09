@@ -1,26 +1,37 @@
-import { CardActionArea } from "@mui/material";
+import { CardActionArea, List } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
-import { PostType } from "../types/type";
 import Text from "./Text";
-
-function PostCard({ value }: { value: PostType }) {
-  const jobDescription = value.jobDescription.slice(0, 3);
+import { PostCardType } from "../types/type";
+import ArrowRightIcon from "@mui/icons-material/ArrowRight";
+import { date } from "../functions/function";
+type CardType = {
+  value: PostCardType;
+};
+function PostCard({ value }: CardType) {
+  const responsibility = value.responsibility.slice(0, 3);
   return (
-    <Card elevation={2} sx={{ mb: 1 }}>
-      <CardActionArea component={Link} to={`${value.id}`} sx={{ px: 2, py: 1 }}>
+    <Card elevation={2} sx={{ mb: 1, borderRadius: 2 }}>
+      <CardActionArea
+        component={Link}
+        to={`/post/${value.id}`}
+        sx={{ px: 2, py: 1 }}
+      >
         <CardContent>
           <CardMedia
             component="img"
-            image="https://source.unsplash.com/random"
+            image={value.image_url}
             sx={{ width: "120px", height: "90px" }}
             title="img"
           />
-          <Typography gutterBottom variant="h6" component="div">
+          <Typography gutterBottom variant="h6">
             {value.title}
+          </Typography>
+          <Typography variant="body1" color="text.primary">
+            {value.companyName}
           </Typography>
           <Typography variant="body1" color="text.secondary">
             {value.address}
@@ -31,9 +42,16 @@ function PostCard({ value }: { value: PostType }) {
           <Typography variant="body1" color="text.secondary">
             {value.salary}
           </Typography>
-          {jobDescription.map((des) => (
-            <Text des={des.title} color="text.secondary" key={des.id} />
-          ))}
+          <List>
+            {responsibility.map((des) => (
+              <Text des={des.title} key={des.id}>
+                <ArrowRightIcon fontSize="medium" />
+              </Text>
+            ))}
+          </List>
+          <Typography variant="body1" color="text.secondary">
+            {date(value.updatedAt)}
+          </Typography>
         </CardContent>
       </CardActionArea>
     </Card>

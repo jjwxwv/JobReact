@@ -1,13 +1,13 @@
-import Box from "@mui/material/Box";
+// import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
+// import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
-import Avatar from "@mui/material/Avatar";
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
+// import Menu from "@mui/material/Menu";
+// import Avatar from "@mui/material/Avatar";
+// import Tooltip from "@mui/material/Tooltip";
+// import MenuItem from "@mui/material/MenuItem";
 import React from "react";
-import { AppBar, Button, Container } from "@mui/material";
+import { Button, Container } from "@mui/material";
 import { Link } from "react-router-dom";
 
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -33,7 +33,7 @@ function NavBar() {
           variant="h5"
           noWrap
           component={Link}
-          to="/post"
+          to="/post?page=1"
           sx={{
             fontFamily: "monospace",
             fontWeight: 600,

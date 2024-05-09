@@ -21,7 +21,7 @@ function SearchBar({
 }: ComponentType) {
   return (
     <form onSubmit={(e) => handleSubmit(e)}>
-      <Grid container rowSpacing={1} columnSpacing={1}>
+      <Grid container rowSpacing={1} columnSpacing={1} sx={{ mb: 1 }}>
         <Grid item xs={12} sm={12} md={5}>
           <TextField
             id="keyword"

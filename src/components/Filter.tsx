@@ -8,52 +8,53 @@ import {
   RadioGroup,
   Typography,
 } from "@mui/material";
+import { commonType } from "../types/type";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { commonType } from "../types/type";
+import { trackPromise } from "react-promise-tracker";
+import { axiosInstance } from "../api";
 
 type ComponentType = {
   selectedHiring: number;
   selectedSalary: number;
+  selectedExp: number;
   setSelectedHiring: React.Dispatch<React.SetStateAction<number>>;
   setSelectedSalary: React.Dispatch<React.SetStateAction<number>>;
+  setSelectedExp: React.Dispatch<React.SetStateAction<number>>;
+  // hiring: commonType[];
+  // salary: commonType[];
 };
 export default function Filter({
   selectedHiring,
   selectedSalary,
+  selectedExp,
   setSelectedHiring,
   setSelectedSalary,
+  setSelectedExp,
 }: ComponentType) {
-  const url1 = "http://localhost:8080/hiring";
-  const url2 = "http://localhost:8080/salary";
+  const hiringUrl = "/hiring";
+  const salaryUrl = "/salary";
+  const expUrl = "/exp";
   const [hiring, setHiring] = useState<commonType[]>([]);
   const [salary, setSalary] = useState<commonType[]>([]);
-  useEffect(
-    function () {
-      async function fetchData() {
-        try {
-          const res1 = await axios.get(url1);
-          const res2 = await axios.get(url2);
-          const data1 = res1.data;
-          const data2 = res2.data;
-          if (res1.statusText !== "OK") {
-            throw new Error("fetch error");
-          }
-          setHiring(data1);
-          setSalary(data2);
-        } catch (err) {
-          if (err instanceof Error) {
-            reportError({ message: err.message });
-          }
-        }
-      }
-      fetchData();
-    },
-    [hiring, salary]
-  );
+  const [exp, setExp] = useState<commonType[]>([]);
+  useEffect(function () {
+    async function fetchData() {
+      const res1 = await axiosInstance.get(hiringUrl);
+      const res2 = await axiosInstance.get(salaryUrl);
+      const res3 = await axiosInstance.get(expUrl);
+      const data1 = res1.data;
+      const data2 = res2.data;
+      const data3 = res3.data;
 
+      setHiring(data1);
+      setSalary(data2);
+      setExp(data3);
+    }
+    trackPromise(fetchData());
+  }, []);
   return (
-    <Paper sx={{ p: 3 }}>
+    <Paper sx={{ p: 3, pb: 5, borderRadius: 2 }}>
       <Typography variant="h5" sx={{ mb: 1 }}>
         ตัวกรอง
       </Typography>
@@ -80,31 +81,30 @@ export default function Filter({
                 key={value.id}
               />
             ))}
-            {/* <FormControlLabel
-              value={1}
-              control={<Radio size="small" />}
-              label="พนักงานประจำ"
-            />
+          </RadioGroup>
+        </Box>
+        <Box>
+          <FormLabel>ประสบการณ์</FormLabel>
+          <RadioGroup
+            value={selectedExp}
+            onChange={(_, value) => {
+              console.log(value);
+              setSelectedExp(Number(value));
+            }}
+          >
             <FormControlLabel
-              value={2}
+              value={0}
               control={<Radio size="small" />}
-              label="พนักงานพาร์ทไทม์"
+              label={"เลือกทั้งหมด"}
             />
-            <FormControlLabel
-              value={3}
-              control={<Radio size="small" />}
-              label="พนักงานรายวัน หรือ รายชั่วโมง"
-            />
-            <FormControlLabel
-              value={4}
-              control={<Radio size="small" />}
-              label="พนักงานสัญญาจ้าง"
-            />
-            <FormControlLabel
-              value={5}
-              control={<Radio size="small" />}
-              label="นักศึกษาฝึกงาน"
-            /> */}
+            {exp.map((value) => (
+              <FormControlLabel
+                value={value.id}
+                control={<Radio size="small" />}
+                label={value.title}
+                key={value.id}
+              />
+            ))}
           </RadioGroup>
         </Box>
         <Box>
@@ -129,31 +129,6 @@ export default function Filter({
                 key={value.id}
               />
             ))}
-            {/* <FormControlLabel
-              value={1}
-              control={<Radio size="small" />}
-              label="ต่ำกว่า 15,000"
-            />
-            <FormControlLabel
-              value={2}
-              control={<Radio size="small" />}
-              label="15,000 - 25,000"
-            />
-            <FormControlLabel
-              value={3}
-              control={<Radio size="small" />}
-              label="25,001 - 35,000"
-            />
-            <FormControlLabel
-              value={4}
-              control={<Radio size="small" />}
-              label="35,000 ขึ้นไป"
-            />
-            <FormControlLabel
-              value={5}
-              control={<Radio size="small" />}
-              label="ไม่ระบุเงินเดือน"
-            /> */}
           </RadioGroup>
         </Box>
       </FormControl>

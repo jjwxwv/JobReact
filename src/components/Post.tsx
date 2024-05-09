@@ -1,63 +1,138 @@
-import { Box, Typography } from "@mui/material";
+import {
+  Box,
+  Card,
+  CardContent,
+  // Container,
+  Divider,
+  // Grid,
+  List,
+  // Paper,
+  Typography,
+} from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { PostType } from "../types/type";
 import Text from "./Text";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import CategoryIcon from "@mui/icons-material/Category";
+import PersonIcon from "@mui/icons-material/Person";
+import PaidIcon from "@mui/icons-material/Paid";
+import ArrowRightIcon from "@mui/icons-material/ArrowRight";
+import EmailIcon from "@mui/icons-material/Email";
+import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
+import WorkHistoryIcon from "@mui/icons-material/WorkHistory";
+import { trackPromise } from "react-promise-tracker";
+import { date } from "../functions/function";
+import { axiosInstance } from "../api";
 
 function Post() {
   const { id } = useParams();
-  const url = `http://localhost:8080/post/${id}`;
+  const url = `/post/${id}`;
   const [post, setPost] = useState<PostType>();
   useEffect(function () {
     async function fetchData() {
-      try {
-        const res = await axios.get(url);
-        const data = res.data;
-        console.log(data);
-        if (res.statusText !== "OK") {
-          throw new Error("fetch error");
-        }
-        setPost(data);
-      } catch (err) {
-        if (err instanceof Error) {
-          reportError({ message: err.message });
-        }
-      }
+      const res = await axiosInstance.get(url);
+      const data = res.data;
+      setPost(data);
     }
-    fetchData();
+    trackPromise(fetchData());
   }, []);
   if (!post) {
     return;
   }
   return (
-    <>
-      <img
-        src="https://source.unsplash.com/random"
-        width="360px"
-        height="270px"
-      />
-      <Typography gutterBottom variant="h5" component="div">
-        {post.title}
-      </Typography>
-      <Box sx={{ m: 1 }}>
-        <Typography variant="body1">{post.companyName}</Typography>
-        <Typography variant="body1">{post.address}</Typography>
-        <Typography variant="body1">{post.category}</Typography>
-        <Typography variant="body1">{post.hiringType}</Typography>
-      </Box>
-      <Box sx={{ m: 1 }}>
-        <Typography variant="body1">{post.salary}</Typography>
-      </Box>
-      <Box sx={{ m: 1 }}>
-        <Typography variant="body1">{post.updatedAt}</Typography>
-      </Box>
-      <Box sx={{ m: 1 }}>
-        <Typography variant="h6">Responsibility</Typography>
-        {post.responsibility.map((res) => (
-          <Text des={res.title} color={""} key={res.id} />
-        ))}
-        {/* <Typography variant="subtitle2" component="li">
+    // <Container maxWidth="md" sx={{ my: 12 }}>
+    // <Card sx={{ my: 4, px: 10, pt: 8, pb: 20 }} elevation={4}>
+    // <Grid container direction="column" spacing={2}>
+    // <Grid item>
+    //   <Card elevation={3} sx={{ borderRadius: 3 }}>
+    //     <CardContent>
+    //       <Typography sx={{ m: 2 }} variant="h5">
+    //         {post.companyName}
+    //       </Typography>
+
+    //       <Divider sx={{ my: 2 }} />
+
+    //       <img
+    //         src={post.image_url}
+    //         width="360px"
+    //         height="270px"
+    //         style={{ margin: "0 auto", display: "block" }}
+    //       />
+    //     </CardContent>
+    //   </Card>
+    // </Grid>
+    // <Grid item>
+    <Card elevation={3} sx={{ borderRadius: 3 }}>
+      <CardContent sx={{ px: 5, py: 3 }}>
+        <Box sx={{ my: 1 }}>
+          <Typography variant="body1">{date(post.updatedAt)}</Typography>
+        </Box>
+        <Box sx={{ pb: 2 }}>
+          <img
+            src={post.image_url}
+            width="360px"
+            height="270px"
+            // style={{ margin: "0 auto", display: "block" }}
+          />
+        </Box>
+        <Box sx={{ my: 1 }}>
+          <Typography variant="h5">{post.title}</Typography>
+          <Typography
+            component={Link}
+            to={`/company/${post.companyId}`}
+            variant="h6"
+          >
+            {post.companyName}
+          </Typography>
+          <List>
+            <Text des={post.email}>
+              <EmailIcon fontSize="medium" />
+            </Text>
+            <Text des={post.tel}>
+              <PhoneIphoneIcon fontSize="medium" />
+            </Text>
+          </List>
+        </Box>
+        <Divider />
+        <Box sx={{ my: 1 }}>
+          <Typography variant="h6">คุณสมบัติพื้นฐาน</Typography>
+          <List>
+            <Text des={post.address}>
+              <LocationOnIcon fontSize="medium" />
+            </Text>
+            <Text des={post.category}>
+              <CategoryIcon fontSize="medium" />
+            </Text>
+            <Text des={post.hiringType}>
+              <PersonIcon fontSize="medium" />
+            </Text>
+            <Text des={post.exp}>
+              <WorkHistoryIcon fontSize="medium" />
+            </Text>
+            <Text des={post.salary}>
+              <PaidIcon fontSize="medium" />
+            </Text>
+          </List>
+        </Box>
+
+        {/* <Box sx={{ my: 1 }}>
+              <Typography variant="body1">{post.salary}</Typography>
+            </Box> */}
+        <Divider />
+        <Box sx={{ my: 1 }}>
+          <Typography variant="h6">หน้าที่และความรับผิดชอบ</Typography>
+          {/* <Box sx={{ mx: 1 }}> */}
+          <List>
+            {post.responsibility.map((res) => (
+              <Text des={res.title} key={res.id}>
+                <ArrowRightIcon fontSize="medium" />
+              </Text>
+            ))}
+          </List>
+          {/* </Box> */}
+          {/* <Typography variant="subtitle2" component="li">
           Free text
         </Typography>
         <Typography variant="subtitle2" component="li">
@@ -66,13 +141,20 @@ function Post() {
         <Typography variant="subtitle2" component="li">
           Free text
         </Typography> */}
-      </Box>
-      <Box sx={{ m: 1 }}>
-        <Typography variant="h6">Qualification</Typography>
-        {post.qualification.map((qua) => (
-          <Text des={qua.title} color={""} key={qua.id} />
-        ))}
-        {/* <Typography variant="subtitle2" component="li">
+        </Box>
+        <Divider />
+        <Box sx={{ my: 1 }}>
+          <Typography variant="h6">คุณสมบัติผู้สมัคร</Typography>
+          {/* <Box sx={{ mx: 1 }}> */}
+          <List>
+            {post.qualification.map((qua) => (
+              <Text des={qua.title} key={qua.id}>
+                <ArrowRightIcon fontSize="medium" />
+              </Text>
+            ))}
+          </List>
+          {/* </Box> */}
+          {/* <Typography variant="subtitle2" component="li">
           Free text
         </Typography>
         <Typography variant="subtitle2" component="li">
@@ -81,13 +163,20 @@ function Post() {
         <Typography variant="subtitle2" component="li">
           Free text
         </Typography> */}
-      </Box>
-      <Box sx={{ m: 1 }}>
-        <Typography variant="h6">Benefits</Typography>
-        {post.benefit.map((ben) => (
-          <Text des={ben.title} color={""} key={ben.id} />
-        ))}
-        {/* <Typography variant="subtitle2" component="li">
+        </Box>
+        <Divider />
+        <Box sx={{ my: 1 }}>
+          <Typography variant="h6">สวัสดิการ</Typography>
+          {/* <Box sx={{ mx: 1 }}> */}
+          <List>
+            {post.benefit.map((ben) => (
+              <Text des={ben.title} key={ben.id}>
+                <ArrowRightIcon fontSize="medium" />
+              </Text>
+            ))}
+          </List>
+          {/* </Box> */}
+          {/* <Typography variant="subtitle2" component="li">
           Free text
         </Typography>
         <Typography variant="subtitle2" component="li">
@@ -96,9 +185,18 @@ function Post() {
         <Typography variant="subtitle2" component="li">
           Free text
         </Typography> */}
-      </Box>
-    </>
+        </Box>
+      </CardContent>
+    </Card>
   );
+  {
+    /* </Grid> */
+  }
+  {
+    /* </Grid> */
+  }
+  // </Card>
+  // </Container>
 }
 
 export default Post;

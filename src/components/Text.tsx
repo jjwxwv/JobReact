@@ -1,10 +1,17 @@
-import { Typography } from "@mui/material";
+import {
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  // Typography,
+} from "@mui/material";
+import { ReactNode } from "react";
 
-function Text({ des, color }: { des: string; color: string }) {
+function Text({ des, children }: { des: string; children?: ReactNode }) {
   return (
-    <Typography variant="subtitle2" color={color} component="li">
-      {des}
-    </Typography>
+    <ListItem disablePadding>
+      <ListItemIcon sx={{ minWidth: "32px" }}>{children}</ListItemIcon>
+      <ListItemText primary={des} />
+    </ListItem>
   );
 }
 
