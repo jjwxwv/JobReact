@@ -72,8 +72,8 @@ function Post() {
         <Box sx={{ pb: 2 }}>
           <img
             src={post.image_url}
-            width="360px"
-            height="270px"
+            width="280px"
+            height="210px"
             // style={{ margin: "0 auto", display: "block" }}
           />
         </Box>

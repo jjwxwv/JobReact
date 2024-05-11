@@ -10,19 +10,19 @@ import React from "react";
 import { Button, Container } from "@mui/material";
 import { Link } from "react-router-dom";
 
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+// const settings = ["Profile", "Account", "Dashboard", "Logout"];
 function NavBar() {
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-    null
-  );
+  // const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+  //   null
+  // );
 
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
-  };
+  // const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+  //   setAnchorElUser(event.currentTarget);
+  // };
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
+  // const handleCloseUserMenu = () => {
+  //   setAnchorElUser(null);
+  // };
 
   return (
     <Toolbar disableGutters>
@@ -42,7 +42,7 @@ function NavBar() {
         >
           jobsgg
         </Typography>
-        <Button variant="text" size="large" disableRipple={true}>
+        <Button disabled variant="text" size="large" disableRipple={true}>
           ผู้ประกอบการเข้าสู่ระบบ
         </Button>
         {/* <Box sx={{ flexGrow: 0 }}>
